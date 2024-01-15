@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('name', 255);
             $table->integer('duration');
             $table->string('location', 255);
-            $table->unsignedBigInteger('repetition_id');
-            $table->unsignedBigInteger('weather_id')->nullable();
+            $table->unsignedBigInteger('repetition_id')->nullable();
+            $table->unsignedBigInteger('weather_id');
             $table->timestamps();
 
             $table->foreign('repetition_id')

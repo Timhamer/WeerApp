@@ -12,7 +12,7 @@ class Activity extends Model
     use HasFactory;
 
     public function weatherCondition()
-{
-    return $this->belongsTo('App\Models\WeatherCondition');
-}
+    {
+        return $this->hasMany(WeatherCondition::class, 'id');
+    }
 }
