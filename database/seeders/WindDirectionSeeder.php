@@ -13,28 +13,28 @@ class WindDirectionSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('windDirection')->insert([
+        DB::table('wind_Directions')->insert([
             'direction' => 'N',
         ]);
-        DB::table('windDirection')->insert([
+        DB::table('wind_Directions')->insert([
             'direction' => 'NE',
         ]);
-        DB::table('windDirection')->insert([
+        DB::table('wind_Directions')->insert([
             'direction' => 'E',
         ]);
-        DB::table('windDirection')->insert([
+        DB::table('wind_Directions')->insert([
             'direction' => 'SE',
         ]);
-        DB::table('windDirection')->insert([
+        DB::table('wind_Directions')->insert([
             'direction' => 'S',
         ]);
-        DB::table('windDirection')->insert([
+        DB::table('wind_Directions')->insert([
             'direction' => 'SW',
         ]);
-        DB::table('windDirection')->insert([
+        DB::table('wind_Directions')->insert([
             'direction' => 'W',
         ]);
-        DB::table('windDirection')->insert([
+        DB::table('wind_Directions')->insert([
             'direction' => 'NW',
         ]);
         

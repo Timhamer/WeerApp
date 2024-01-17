@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('winddirection', function (Blueprint $table) {
+        Schema::create('wind_directions', function (Blueprint $table) {
             $table->id();
             $table->string('direction', 100);
             $table->timestamps();
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('winddirection');
+        Schema::dropIfExists('wind_directions');
     }
 };

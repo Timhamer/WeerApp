@@ -25,10 +25,10 @@ class ActivityController extends Controller
     {
         //Send the precipitations and wind directions to the view
         $precipitations = DB::table('precipitations')->get();
-        $windDirections = DB::table('winddirection')->get();
+        $windDirections = DB::table('wind_directions')->get();
 
         //compact the precipitations and wind directions and send them to the view
-        return view('activitixes.create', compact('precipitations', 'windDirections'));
+        return view('activities.create', compact('precipitations', 'windDirections'));
     }
 
     /**
@@ -37,15 +37,13 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $existingName = Activity::where('name', $request->name)->first();
-
         if ($existingName) {
         } else {
             //Create a row in the weatherconditions table
             $weatherCondition = new WeatherCondition();
-            $weatherCondition->temperature_min = $request->temperature_min;
-            $weatherCondition->temperature_max = $request->temperature_max;
-            $weatherCondition->cloudiness = $request->cloudiness;
-            $weatherCondition->wind_speed = $request->wind;
+            $weatherCondition->temperature_min = $request->temp_min;
+            $weatherCondition->temperature_max = $request->temp_max;
+            $weatherCondition->wind_speed = $request->windspeed;
             $weatherCondition->save();
 
             $precipitations = $request->selected_precipitations;
@@ -67,12 +65,12 @@ class ActivityController extends Controller
 
             // Loop through the array and get the ID of each precipitation
             foreach ($windDirectionsArray as $windDirection) {
-                $windDirectionId = DB::table('winddirection')->where('direciton', $windDirection)->value('id');
+                $windDirectionId = DB::table('wind_directions')->where('direction', $windDirection)->value('id');
                 // put the weathercondition id and the precipitation id in the pivot table
                 $weatherCondition->windDirections()->attach($windDirectionId);
             }
 
-           
+
 
             $existingName = new Activity();
             $existingName->user_id = auth()->user()->id;
@@ -82,7 +80,7 @@ class ActivityController extends Controller
             $existingName->weather_id = $weatherCondition->id;
             $existingName->save();
         }
-        return response()->json($existingName);
+        return redirect()->route('home');
     }
 
 
@@ -99,18 +97,66 @@ class ActivityController extends Controller
      */
     public function edit(Request $request, Activity $activity)
     {
-        $activity = Activity::find($request->id);
-        dd($activity);
-        $precipitations = $activity->weatherCondition->precipitations->pluck('name');
-        return view('activities.edit', compact('activity', 'precipitations'));
+        $activity = Activity::with(['weatherCondition.precipitations', 'weatherCondition.winddirections'])
+            ->find($request->id);
+            $precipitations = DB::table('precipitations')->get();
+            $windDirections = DB::table('wind_directions')->get();
+
+        return view('activities.edit', compact('activity', 'precipitations', 'windDirections'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Activity $activity)
+    public function update(Request $request, $id)
     {
+        // Find the activity to be updated
+        $existingName = Activity::findOrFail($id);
+    
+        // Check if the new name already exists
+        if ($existingName->name != $request->name) {
+            $nameExists = Activity::where('name', $request->name)->first();
+            if ($nameExists) {
+                // Handle the case where the new name already exists
+                // You can redirect back with an error message or handle it as per your requirement
+                return redirect()->back()->with('error', 'The name already exists. Please choose a different name.');
+            }
+        }
+    
+        // Update the weather condition
+        $weatherCondition = WeatherCondition::findOrFail($existingName->weather_id);
+        $weatherCondition->temperature_min = $request->temp_min;
+        $weatherCondition->temperature_max = $request->temp_max;
+        $weatherCondition->wind_speed = $request->windspeed;
+        $weatherCondition->save();
+    
+        // Update the selected precipitations
+        $precipitations = $request->selected_precipitations;
+        $precipitationArray = explode(',', $precipitations);
+        $weatherCondition->precipitations()->detach(); // Remove existing associations
+        foreach ($precipitationArray as $precipitation) {
+            $precipitationId = DB::table('precipitations')->where('type', $precipitation)->value('id');
+            $weatherCondition->precipitations()->attach($precipitationId);
+        }
+    
+        // Update the selected wind directions
+        $windDirections = $request->selected_wind_directions;
+        $windDirectionsArray = explode(',', $windDirections);
+        $weatherCondition->windDirections()->detach(); // Remove existing associations
+        foreach ($windDirectionsArray as $windDirection) {
+            $windDirectionId = DB::table('wind_directions')->where('direction', $windDirection)->value('id');
+            $weatherCondition->windDirections()->attach($windDirectionId);
+        }
+    
+        // Update the activity details
+        $existingName->name = $request->name;
+        $existingName->duration = $request->duration;
+        $existingName->location = $request->location;
+        $existingName->save();
+    
+        return redirect()->route('home')->with('success', 'Activity updated successfully.');
     }
+    
 
     /**
      * Remove the specified resource from storage.

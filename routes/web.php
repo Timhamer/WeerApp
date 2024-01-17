@@ -21,6 +21,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/activities/create', [App\Http\Controllers\ActivityController::class, 'create'])->name('activities.create');
 Route::get('/activities/{id}/edit', [App\Http\Controllers\ActivityController::class, 'edit'])->name('activities.edit');
-Route::post('/activities/update', [App\Http\Controllers\ActivityController::class, 'update'])->name('activities.update');
+Route::post('/activities/{id}/update', [App\Http\Controllers\ActivityController::class, 'update'])->name('activities.update');
 Route::post('/activities/store', [App\Http\Controllers\ActivityController::class, 'store'])->name('activities.store');
 // Route::post('/activities', [App\Http\Controllers\ActivityController::class, 'store'])->name('activities.store');

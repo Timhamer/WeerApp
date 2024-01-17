@@ -43,7 +43,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h2>Edit Activity</h2>
+                    <h2>Create Activity</h2>
                     @csrf
                     @method('POST')
 
@@ -54,15 +54,15 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="temp_max" class="form-label">Temp Max</label>
-                        <input type="text" class="form-control" id="temp_max" name="temp_max"
-                            placeholder="Enter Temp Max" value="">
-                    </div>
-
-                    <div class="mb-3">
                         <label for="temp_min" class="form-label">Temp Min</label>
                         <input type="text" class="form-control" id="temp_min" name="temp_min"
                             placeholder="Enter Temp Min" value="">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="temp_max" class="form-label">Temp Max</label>
+                        <input type="text" class="form-control" id="temp_max" name="temp_max"
+                            placeholder="Enter Temp Max" value="">
                     </div>
 
                     <div class="mb-3">
@@ -83,14 +83,14 @@
                             placeholder="Enter Location" value="">
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <h5>Wind Direction</h5>
                         <div class="btn-group wind-direction-buttons" role="group" aria-label="Wind Direction">
-                            @foreach ($windDirections as $direction)
-                                <button type="button" class="btn btn-secondary toggle-button" data-value="{{ $direction }}">{{ $direction }}</button>
+                            @foreach ($windDirections as $WindDirection)
+                                <button type="button" class="btn btn-secondary toggle-button" data-value="{{ $WindDirection->direction }}">{{ $WindDirection->direction }}</button>
                             @endforeach
                             <input type="hidden" name="selected_wind_directions" id="selected_wind_directions" value="">
                         </div>
@@ -106,13 +106,6 @@
                             <input type="hidden" name="selected_precipitations" id="selected_precipitations"
                                 value="">
                         </div>
-                    </div>
-
-                    <h5>Cloudiness</h5>
-                    <div class="mb-3">
-                        <label for="cloudiness" class="form-label">Cloudiness</label>
-                        <input type="text" class="form-control" id="cloudiness" name="cloudiness"
-                            placeholder="Enter cloudiness" value="">
                     </div>
                 </div>
             </div>

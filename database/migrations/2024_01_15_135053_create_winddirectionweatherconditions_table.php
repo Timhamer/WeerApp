@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('winddirectionweatherconditions', function (Blueprint $table) {
+        Schema::create('weather_condition_wind_direction', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('winddirection_id');
-            $table->unsignedBigInteger('weathercondition_id');
+            $table->unsignedBigInteger('wind_direction_id');
+            $table->unsignedBigInteger('weather_condition_id');
             $table->timestamps();
 
-            $table->foreign('winddirection_id')
+            $table->foreign('wind_direction_id')
                 ->references('id')
-                ->on('winddirection')
+                ->on('wind_directions')
                 ->onDelete('cascade');
                 
-            $table->foreign('weathercondition_id')
+            $table->foreign('weather_condition_id')
                 ->references('id')
                 ->on('weatherconditions')
                 ->onDelete('cascade');

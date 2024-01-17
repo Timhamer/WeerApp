@@ -1,0 +1,10 @@
+.weather-day {
+    background-color: white;
+    border-radius: 50px;
+    margin: 10px;
+    padding: 20px;
+}
+
+.rounded-card {
+    border-radius: 1.5rem;
+}

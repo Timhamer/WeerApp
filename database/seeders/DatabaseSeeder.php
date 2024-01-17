@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
         UserSeeder::class,
         PrecipitationSeeder::class,
+        WindDirectionSeeder::class,
+        WeatherConditionSeeder::class,
+        ActivitySeeder::class,
             ]);
     }
 }

@@ -13,6 +13,6 @@ class Activity extends Model
 
     public function weatherCondition()
     {
-        return $this->hasMany(WeatherCondition::class, 'id');
+        return $this->hasOne(WeatherCondition::class, 'id');
     }
 }
